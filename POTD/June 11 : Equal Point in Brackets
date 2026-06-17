@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int findIndex(string s) {
+        int n = s.size();
+
+        int totalClose = 0;
+        for (char c : s) {
+            if (c == ')') totalClose++;
+        }
+
+        int openSeen = 0, closeSeen = 0;
+
+        for (int k = 0; k <= n; k++) {
+            if (k > 0 && s[k - 1] == '(') {
+                openSeen++;
+            }
+            if (k > 0 && s[k - 1] == ')') {
+                closeSeen++;
+            }
+
+            // check condition
+            if (openSeen == totalClose - closeSeen) {
+                return k;
+            }
+        }
+
+        return n; // guaranteed valid per problem
+    }
+};
