@@ -1,0 +1,27 @@
+class Solution {
+  public:
+    int minimumCost(vector<int> &cost, int w) {
+        
+        const int INF = 1e9;
+        vector<int> dp(w + 1, INF);
+        
+        dp[0] = 0; // base case: 0 cost to make weight 0
+        
+        for (int i = 1; i <= w; i++) {
+            
+            for (int j = 0; j < cost.size(); j++) {
+                
+                int weight = j + 1;
+                
+                // skip unavailable packets
+                if (cost[j] == -1) continue;
+                
+                if (weight <= i && dp[i - weight] != INF) {
+                    dp[i] = min(dp[i], dp[i - weight] + cost[j]);
+                }
+            }
+        }
+        
+        return (dp[w] == INF) ? -1 : dp[w];
+    }
+};
