@@ -1,0 +1,34 @@
+class Solution {
+  public:
+    vector<int> optimalArray(vector<int> &arr) {
+        int n = arr.size();
+
+        vector<int> ans(n);
+        vector<long long> pref(n);
+
+        // Build prefix sums
+        pref[0] = arr[0];
+        for (int i = 1; i < n; i++)
+            pref[i] = pref[i - 1] + arr[i];
+
+        for (int i = 0; i < n; i++) {
+            int m = i / 2;          // median index
+            long long med = arr[m];
+
+            long long leftSum =
+                (m ? pref[m - 1] : 0);
+            long long rightSum =
+                pref[i] - pref[m];
+
+            // Cost on both sides of median
+            long long left =
+                med * m - leftSum;
+            long long right =
+                rightSum - med * (i - m);
+
+            ans[i] = left + right;
+        }
+
+        return ans;
+    }
+};
