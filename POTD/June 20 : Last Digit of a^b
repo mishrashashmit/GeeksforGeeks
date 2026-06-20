@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    int getLastDigit(string& a, string& b) {
+
+        // if exponent is 0
+        if (b == "0") return 1;
+
+        int base = a.back() - '0';
+
+        // cycles of last digit (correct patterns)
+        vector<vector<int>> cycle = {
+            {0},
+            {1},
+            {2,4,8,6},
+            {3,9,7,1},
+            {4,6},
+            {5},
+            {6},
+            {7,9,3,1},
+            {8,4,2,6},
+            {9,1}
+        };
+
+        int len = cycle[base].size();
+
+        // compute b % len (since b is big string)
+        int exp = 0;
+        for (char c : b) {
+            exp = (exp * 10 + (c - '0')) % len;
+        }
+
+        if (exp == 0) exp = len;
+
+        return cycle[base][exp - 1];
+    }
+};
