@@ -1,0 +1,19 @@
+class Solution {
+  public:
+    int maxPeopleDefeated(int p) {
+        long long sum = 0;
+        int cnt = 0;
+
+        for (long long i = 1;; i++) {
+            long long sq = i * i;
+
+            if (sum + sq > p)
+                break;
+
+            sum += sq;
+            cnt++;
+        }
+
+        return cnt;
+    }
+};
