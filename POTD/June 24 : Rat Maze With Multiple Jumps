@@ -1,0 +1,58 @@
+class Solution {
+public:
+    bool solve(int x, int y, int n,
+               vector<vector<int>>& mat,
+               vector<vector<int>>& sol,
+               vector<vector<int>>& dp) {
+
+        if (x == n - 1 && y == n - 1) {
+            sol[x][y] = 1;
+            return true;
+        }
+
+        if (x >= n || y >= n || mat[x][y] == 0)
+            return false;
+
+        if (dp[x][y] == 0)   // already known dead end
+            return false;
+
+        sol[x][y] = 1;
+
+        for (int jump = 1; jump <= mat[x][y]; jump++) {
+
+            // Right first for same jump length
+            if (y + jump < n) {
+                if (solve(x, y + jump, n, mat, sol, dp))
+                    return true;
+            }
+
+            // Down
+            if (x + jump < n) {
+                if (solve(x + jump, y, n, mat, sol, dp))
+                    return true;
+            }
+        }
+
+        sol[x][y] = 0;
+        dp[x][y] = 0;      // mark as impossible
+        return false;
+    }
+
+    vector<vector<int>> shortestDist(vector<vector<int>>& mat) {
+
+        int n = mat.size();
+
+        if (mat[0][0] == 0)
+            return {{-1}};
+
+        vector<vector<int>> sol(n, vector<int>(n, 0));
+
+        // -1 = unknown, 0 = dead end
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+
+        if (solve(0, 0, n, mat, sol, dp))
+            return sol;
+
+        return {{-1}};
+    }
+};
