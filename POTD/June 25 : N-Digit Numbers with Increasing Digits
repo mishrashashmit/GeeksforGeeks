@@ -1,0 +1,42 @@
+class Solution {
+  public:
+    
+    void solve(int len, int n, int num,
+               vector<int>& ans, int lastDigit) {
+
+        // Number completed
+        if (len == n) {
+            ans.push_back(num);
+            return;
+        }
+
+        // Pick next larger digit
+        for (int d = lastDigit + 1; d <= 9; d++) {
+            solve(len + 1, n, num * 10 + d, ans, d);
+        }
+    }
+
+    vector<int> increasingNumbers(int n) {
+
+        vector<int> ans;
+
+        // Single digit case
+        if (n == 1) {
+            for (int i = 0; i <= 9; i++)
+                ans.push_back(i);
+
+            return ans;
+        }
+
+        // Impossible beyond 10 distinct digits
+        if (n > 9)
+            return {};
+
+        // First digit cannot be 0
+        for (int start = 1; start <= 9; start++) {
+            solve(1, n, start, ans, start);
+        }
+
+        return ans;
+    }
+};
