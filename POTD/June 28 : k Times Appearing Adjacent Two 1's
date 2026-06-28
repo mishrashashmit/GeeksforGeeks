@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int countStrings(int n, int k) {
+
+        const int MOD = 1e9 + 7;
+
+        vector<vector<long long>> prev(k + 1, vector<long long>(2, 0));
+        vector<vector<long long>> curr(k + 1, vector<long long>(2, 0));
+
+        // Base case
+        prev[0][0] = 1;
+        prev[0][1] = 1;
+
+        for (int len = 2; len <= n; len++) {
+
+            // Reset current layer
+            for (int cnt = 0; cnt <= k; cnt++) {
+                curr[cnt][0] = 0;
+                curr[cnt][1] = 0;
+            }
+
+            for (int cnt = 0; cnt <= k; cnt++) {
+
+                // Append 0
+                curr[cnt][0] = (prev[cnt][0] + prev[cnt][1]) % MOD;
+
+                // Append 1 after 0
+                curr[cnt][1] = prev[cnt][0];
+
+                // Append 1 after 1
+                if (cnt > 0)
+                    curr[cnt][1] = (curr[cnt][1] + prev[cnt - 1][1]) % MOD;
+            }
+
+            swap(prev, curr);
+        }
+
+        return (prev[k][0] + prev[k][1]) % MOD;
+    }
+};
