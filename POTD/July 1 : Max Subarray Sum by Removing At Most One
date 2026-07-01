@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int maxSumSubarray(vector<int>& arr) {
+
+        long long keep = arr[0];
+        long long drop = LLONG_MIN;
+        long long ans = arr[0];
+
+        for(int i = 1; i < arr.size(); i++) {
+
+            long long newDrop = max(
+                (drop == LLONG_MIN ? LLONG_MIN : drop + arr[i]),
+                keep
+            );
+
+            long long newKeep = max(
+                (long long)arr[i],
+                keep + arr[i]
+            );
+
+            keep = newKeep;
+            drop = newDrop;
+
+            ans = max({ans, keep, drop});
+        }
+
+        return (int)ans;
+    }
+};
