@@ -1,0 +1,35 @@
+class Solution {
+  public:
+  
+    int maxGap(vector<int> &v, int limit) {
+        
+        sort(v.begin(), v.end());
+        
+        int prev = 0;
+        int ans = 0;
+        
+        for (int x : v) {
+            ans = max(ans, x - prev - 1);
+            prev = x;
+        }
+        
+        ans = max(ans, limit - prev);
+        
+        return ans;
+    }
+    
+    int largestArea(int n, int m, vector<vector<int>> &arr) {
+        
+        vector<int> rows, cols;
+        
+        for (auto &cell : arr) {
+            rows.push_back(cell[0]);
+            cols.push_back(cell[1]);
+        }
+        
+        int freeRows = maxGap(rows, n);
+        int freeCols = maxGap(cols, m);
+        
+        return freeRows * freeCols;
+    }
+};
