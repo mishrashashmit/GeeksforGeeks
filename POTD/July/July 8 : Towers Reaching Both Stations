@@ -1,0 +1,96 @@
+//Pacific Atlantic Water Flow problem
+
+class Solution {
+public:
+
+    void bfs(queue<pair<int,int>> &q,
+             vector<vector<int>> &mat,
+             vector<vector<bool>> &vis) {
+
+        int n = mat.size();
+        int m = mat[0].size();
+
+        int dr[] = {-1,1,0,0};
+        int dc[] = {0,0,-1,1};
+
+        while(!q.empty()) {
+
+            auto [r,c] = q.front();
+            q.pop();
+
+            for(int k=0;k<4;k++) {
+
+                int nr = r + dr[k];
+                int nc = c + dc[k];
+
+                if(nr<0 || nr>=n || nc<0 || nc>=m)
+                    continue;
+
+                if(vis[nr][nc])
+                    continue;
+
+                // Reverse traversal
+                if(mat[nr][nc] < mat[r][c])
+                    continue;
+
+                vis[nr][nc] = true;
+                q.push({nr,nc});
+            }
+        }
+    }
+
+    int countCoordinates(vector<vector<int>>& mat) {
+
+        int n = mat.size();
+        int m = mat[0].size();
+
+        vector<vector<bool>> P(n, vector<bool>(m,false));
+        vector<vector<bool>> Q(n, vector<bool>(m,false));
+
+        queue<pair<int,int>> qp, qq;
+
+        // Station P : top row
+        for(int j=0;j<m;j++) {
+            if(!P[0][j]){
+                P[0][j]=true;
+                qp.push({0,j});
+            }
+        }
+
+        // Station P : left column
+        for(int i=0;i<n;i++) {
+            if(!P[i][0]){
+                P[i][0]=true;
+                qp.push({i,0});
+            }
+        }
+
+        // Station Q : bottom row
+        for(int j=0;j<m;j++) {
+            if(!Q[n-1][j]){
+                Q[n-1][j]=true;
+                qq.push({n-1,j});
+            }
+        }
+
+        // Station Q : right column
+        for(int i=0;i<n;i++) {
+            if(!Q[i][m-1]){
+                Q[i][m-1]=true;
+                qq.push({i,m-1});
+            }
+        }
+
+        bfs(qp, mat, P);
+        bfs(qq, mat, Q);
+
+        int ans = 0;
+
+        for(int i=0;i<n;i++)
+            for(int j=0;j<m;j++)
+                if(P[i][j] && Q[i][j])
+                    ans++;
+
+        return ans;
+    }
+};
