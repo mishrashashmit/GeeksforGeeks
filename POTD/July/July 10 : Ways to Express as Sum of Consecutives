@@ -1,0 +1,19 @@
+class Solution {
+  public:
+    int getCount(int n) {
+        int ans = 0;
+        long long twoN = 2LL * n;
+
+        for (long long k = 2; k * (k + 1) / 2 <= n; k++) {
+
+            if (twoN % k) continue;
+
+            long long t = twoN / k - k + 1;
+
+            if (t > 0 && t % 2 == 0)
+                ans++;
+        }
+
+        return ans;
+    }
+};
