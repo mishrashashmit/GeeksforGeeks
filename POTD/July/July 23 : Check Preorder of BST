@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool canRepresentBST(vector<int> &arr) {
+
+        stack<int> st;
+        int lower = INT_MIN;
+        
+        for (int x : arr) {
+            if (x < lower)
+                return false;
+
+            while (!st.empty() && x > st.top()) {
+                lower = st.top();
+                st.pop();
+            }
+            st.push(x);
+        }
+        return true;
+    }
+};
